@@ -1,0 +1,444 @@
+.\" t
+.\" @(#)fvwm.1	0.90 7/21//93 (UKC)
+.TH FVWM 0.9 "21 July 1993"
+.UC
+.SH NAME
+fvwm \- Feeble(?) Virtual Window Manager for X11
+.SH SYNOPSIS
+\fBfvwm\fP [ \fIoptions\fP ]
+.SH DESCRIPTION
+\fIFvwm\fP is a window manager for X11. It is a derivative of \fItwm\fP, 
+redesigned 
+to minimize memory consumption, provide a 3-D look to window frames, and
+provide a simple virtual desktop.  Memory consumption is estimated at about 
+one-half to one-third the memory consumption of \fItwm\fP, due primarily to a 
+redesign of \fItwm\fP's inefficient method to storing mouse bindings. In 
+addition, many of the configurable options of Twm have been removed. 
+
+The name "Feeble(?) Virtual Window Manager" was used because "Small Window
+Manager" would have the same abbreviation as the "Saber Window Manager", which
+already exists. In any case, \fIfvwm\fP is small, and anything that is
+small must be feeble!
+
+.SH SPECIAL NOTE FOR XFREE86 USERS
+Xfree86 provides a virtual screen whose operation can be confusing when
+used in conjunction with this virtual window manager. With Xfree86, windows
+which appear on the virtual screen actually get drawn into video memory, so the
+virtual screen size is limited by available video memory.
+
+With \fIfvwm\fP's virtual desktop, windows which do not appear on the screen
+do not actually get drawn into video RAM. The size of the virtual desktop is 
+limited to about 32,000 by 32,000 pixels. It is probably impractical to use a
+virtual desktop more than about 5 times the visible screen in each direction. 
+Note that memory usage with the virtual desktop is a function of the number of
+windows which exist. The size of the desktop makes no difference.
+
+When becoming familiar with \fIfvwm\fP, it is recommended that you disable 
+Xfree86's virtial screen, by setting the virtual screen size to the
+physical screen size. When familiar with \fIfvwm\fP, you may want to
+re-enable Xfree86's virtual screen.
+
+.SH COPYRIGHTS
+Since \fIfvwm\fP is derived from \fItwm\fP code it shares \fItwm\fP's 
+copyrights.
+
+\fIfvwm\fP is copyright 1988 by Evans and Sutherland Computer Corporation, 
+Salt Lake City, Utah, and 1989 by the Massachusetts Institute of Technology,
+Cambridge, Massachusetts, All rights reserved. It is also copyright 1993 by
+Robert Nation.
+
+Permission to use, copy, modify, and distribute this software and   
+its documentation  for  any  purpose  and  without  fee is hereby   
+granted, provided that the above copyright notice appear  in  all   
+copies and that both  that  copyright  notice  and  this  permission   
+notice appear in supporting  documentation,  and  that  the   
+names of Evans & Sutherland and M.I.T. not be used in advertising   
+in publicity pertaining to distribution of the  software  without   
+specific, written prior permission.                                 
+
+ROBERT NATION, EVANS & SUTHERLAND, AND M.I.T. DISCLAIM ALL WARRANTIES WITH 
+REGARD 
+TO THIS SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES  OF  MERCHANT-   
+ABILITY  AND  FITNESS,  IN  NO  EVENT SHALL EVANS & SUTHERLAND OR   
+M.I.T. BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL  DAM-   
+AGES OR  ANY DAMAGES WHATSOEVER  RESULTING FROM LOSS OF USE, DATA   
+OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+TORTIOUS ACTION, ARISING OUT OF OR IN  CONNECTION  WITH  THE  USE
+OR PERFORMANCE OF THIS SOFTWARE.                                 
+
+.SH ANATOMY OF A WINDOW
+\fIFvwm\fP puts a decorative border around most windows. This border consists
+of a bar on each side, and a small "L" shaped section on each corner. 
+There is an additional  top bar is called the title bar, and is used to 
+display the name of the window.
+The side and bottom bars are collectively known as the side-bars. The corner
+pieces are called the frame.
+
+Unless the standard defaults files are modified, pressing mouse button 1 in
+the title or side-bars will begin a 
+move operation on the window. Pressing button 1 in the corner frame pieces 
+will begin a resize operation. Pressing
+button 2 anywhere in the border brings up an extensive list of window 
+operations. 
+
+Two title-bar buttons exist. The one on the left pops up a menu of
+basic window operations, and the one on the right iconifies the window. 
+Normally, the left title bar button is used to pop-up a list of window 
+operations, and the right button is used to iconify the window.
+
+.SH THE VIRTUAL DESKTOP
+\fIFvwm\fP is a virtual window manager, which means that the user can scroll
+around on a desktop whose size is larger than the visible screen. The virtual
+desktop size is user-configurable, but is 3 times the visible screen size in 
+each direction, by default.
+
+Window geometries
+are specified relative  to the current viewport. That is xterm -geometry +0+0
+will always show up in the upper-left hand corner of the visible portion of
+the screen. It is permissible to specify geometries which place windows on
+the virtual desktop, but off the screen. For example, if the visible screen
+is 1000 by 1000 pixels, and the desktop size is 3x3, and the current viewport
+is at the upper left hand corner of the desktop, then invoking xterm -geometry 
++1000+1000 will place the window just off of the lower right hand corner of
+the screen. It can be found by moving the mouse to the lower right hand 
+corner of the screen, and waiting for it to scroll into view.
+
+A geometry specified as something like xterm -geometry -5-5 will generally
+place the windows lower right hand corner 5 pixels from the lower right hand 
+corner of the visible portion of the screen. Not all applications support
+window geometries with negative offsets.
+
+.SH INITIALIZATION
+Unlike some other window managers, \fIfvwm\fP does not attempt to manage all 
+local screens. Only screen zero of the default or specified display will be
+managed. This dramatically simplifies the \fIfvwm\fP code.
+
+During initialization, \fIfvwm\fP will search for a configuration file which
+describes key and button bindings, and a few other things. The format of 
+these files will be described later. First, \fIfvwm\fP will search for a file
+named .fvwmrc in the users home directory. Failing that, it will look for
+/usr/lib/X11/fvwm/system.fvwmrc for system-wide defaults. If that file is not 
+found, fvwm will exit.
+
+.SH OPTIONS
+Only two command line options are supported by \fIfvwm\fP:
+.IP "\fB-d\fP \fIdisplayname\fP"
+Manage the display called, "displayname", instead of the name obtained from 
+the environment variable $DISPLAY.
+.IP "\fB-debug\fP"
+Puts X transactions in synchronous mode, which dramatically slows things
+down, but guarantees that \fIfvwm\fP's internal error messages are correct.
+
+.SH CONFIGURATION FILES
+The configuration file is used to describe mouse and button bindings,
+colors, the virtual display size, and related items. This section describes 
+the configuration options.
+
+.IP "StdForeColor \fIcolorname\fP"
+Sets the foreground color for menus, the pager window, and non-selected window
+titles to \fIcolorname\fP. When using a monochrome screen, this option is 
+ignored, and black is used. 
+
+.IP "StdBackColor \fIcolorname\fP"
+Sets the background color for menus, the pager window, and non-selected 
+windows to \fIcolorname\fP. When using a monochrome screen, this option is 
+ignored, and white is used.
+
+.IP "HiForeColor \fIcolorname\fP"
+Sets the color for selected window's
+title to \fIcolorname\fP. When using a monochrome screen, this option is 
+ignored, and black is used.
+
+.IP "HiBackColor \fIcolorname\fP"
+Sets the background color for the selected 
+window to \fIcolorname\fP. When using a monochrome screen, this option is 
+ignored, and white is used.
+
+.IP "Font \fIfontname\fP"
+Makes \fIfvwm\fP use font \fIfontname\fP instead of "fixed."
+
+.IP "NoTitle \fIwindowname\fP"
+Keeps \fIfvwm\fP from decorating windows named \fIwindowname\fP. This is
+handy for clocks and similar gadgets that you don't want to take up too
+much space. \fIwindowname\fP can be a window's name or its class.
+
+.IP "Sticky \fIwindowname\fP"
+Sticky windows "stick to the screen's glass." That is, they don't move the
+the viewport into the virtual desktop changes.  \fIwindowname\fP can be a 
+window's name or its class.
+
+.IP "StaysOnTop \fIwindowname\fP"
+These  windows always try to stay on top of the other windows. This might mbe
+handy for clocks or mailboxes that you would always like to be visible. If the
+window is explicitly lowered, it will not try to force its way back to the top
+until it is explicitly raised. \fIwindowname\fP can be a window's name or its class.
+
+.IP "CirculateSkip \fIwindowname\fP"
+Causes windows with the indicated name to be skipped over when the circulate-up
+or circulate-down functions are invoked.
+ \fIwindowname\fP can be a window's name or its class.
+
+.IP "CenterOnCirculate"
+When circulating, the desktop page containing the window which the pointer
+is moving to is automatically selected. If CenterOnCirculate is selected,
+then fvwm will do its best to center the target window in the desktop 
+viewport, rather than just lining up to the closest page.
+
+.IP "DeskTopSize \fIHorizontal\fPx\fIVertical\fP"
+Defines the virtual desktop size in units of the physical screen size.
+
+.IP "DeskTopScale \fIScale\fP"
+Defines the virtual desktop scale with respect to the screen.
+
+.IP "BoundaryWidth \fIWidth\fP"
+Changes the boundary width on decorated windows to the specified value.
+The default is 6.
+
+.IP "NoEdgeScroll"
+Disables scrolling when the cursor reaches the edge of the screen
+
+.IP "EdgePage"
+Allows scrolling by entire desktop pages when the cursor hits the edge 
+of the screen.
+
+.IP "ClickToFocus"
+Normally keyboard input goes to the window the mouse pointer is in. If this
+option is set, the keyboard input stays with one window until a new
+window is clicked on.
+
+.IP "DontMoveOff"
+Prevents windows from being moved off or initially placed off of the screen.
+A few programs will not work correctly if you use this option.
+
+.IP "Pager \fI X_Location Y_Location"
+Enables a paging style of moving across the desktop. A Pager window
+will appear at (X_Location, Y_Location) (not a pop-up). In the Pager
+window, pressing mouse button 1 will move the desktop viewport to the
+selected page, pressing button 2 will move to the page after the current
+page, and pressing button 3 will move the top-left corner of the viewport
+to the location of the button press, even if it does not line up with a page.
+The Pager is automatically sticky, but does not automatically
+StayOnTop.
+
+.IP "Mouse \fIButton Context Modifiers Function\fP"
+Defines a mouse binding. \fIButton\fP is the mouse button number. 
+\fIContext\fP describes in what context the binding applies. Valid contexts 
+are R for the root window, W for an application window, T for a window title 
+bar, S for a window side-bar or bottom-bar, F for a window frame (the corners),
+I for an Icon window, 1 for title-bar button number 1, 2 for title-bar button number 2, A for any context, or any combination of these letters. 
+For instance, a context of FST will apply when the mouse is anywhere in a 
+window's border. \fIModifiers\fP is any combination of N for no modifiers,
+C for control, S for shift, M for Meta. For example, a modifier of CM will
+apply when both the Meta and shift keys are down. Function is one of 
+\fIfvwm\fP's built in functions.
+
+.IP "Key \fIkeyname Context Modifiers Function\fP"
+Binds a keyboard key to a specified \fIfvwm\fP built in function.
+Definition is the same as for a mouse binding, except that the mouse button 
+number is replaced with a key name. The \fIkeyname\fP is one of the entries 
+from /usr/include/X11/keysymdef.h, with the leading XK_ omitted. The 
+\fIContext\fP and \fIModifiers\fP fields are defined as in the mouse binding.
+
+.IP "AutoPlaceIcons"
+Causes icons to be placed along the right side or bottom of the screen, if
+possible, when they are first created. Icons will not be placed over locations
+taken by icons which have already been created or over currently
+open windows.
+
+.IP "Icon \fIwindowname bitmap-file\fP"
+Specifies the bitmap to be used for a window when it is iconified.
+The \fIwindowname\fP can be an applications window name or class name, and
+must be enclosed in qoutes. The \fIbitmap-file\fP is the full path name to a
+standard X11 bitmap file. If a window supplies its own icon bitmap, that will
+be used in preference to anything specified with this command.
+
+.IP "DecorateTransients"
+Causes transient windows, which are normally left undecorated, to be given the
+usual \fIfvwm\fP decorations. Note that some pop-up windows, such as the xterm
+menus, are not managed by the window manager, and still do not receive 
+decorations.
+
+.IP "RandomPlacement"
+Causes windows which would normally require user-placement to be automatically
+placed in ever-so-slightly random locations.
+
+.IP "Popup \fIname\fP"
+Starts the definition of a pop-up menu which will later be bound to a mouse
+button or key. \fIname\fP must be enclosed in quotes. Menu entries are included
+on lines following the Popup keyword. The menu definition ends with the key
+word EndPopup. Menu entries are specified as shown in the following example.
+The first word on each line is the built-in function which will be performed,
+followed by the caption (enclosed in qoutes) which will be shown in the menu, 
+followed by any additional arguments needed by the built-in function. Sub-menus
+can be specified by using the Popup built-in, as long as the sub-menu
+was defined earlier in the configuration file.
+.nf
+.sp
+Popup "Window Ops"
+  Title	  "Window Ops"
+  Move    "Move"
+  Resize  "Resize"
+  Raise   "Raise"
+  Lower   "Lower"
+  Iconify "(De)Iconify"
+  Nop	" "
+  Destroy "Destroy"
+  Title   "HARDCOPY"
+  Exec    "Hardcopy"  xdpr
+  Exec    "Hardcopy RV"  xdpr -rv
+EndMenu
+
+
+
+.SH BUILT IN FUNCTIONS
+\fIFvwm\fP supports a small set of built in functions which can be bound to
+keyboard or mouse buttons.
+.IP "Nop       "
+Does nothing. This is used to insert a blank line in a menu.
+.IP "Title     "
+Does nothing. This is used to insert a title line in a popup or menu.
+.IP "Beep      "
+Makes the computer beep.
+.IP "Quit      "
+Exits \fIfvwm\fP, generally causing X to exit too.
+.IP "Restart   "
+Causes \fIfvwm\fP to re-read its config file.
+.IP "Refresh   "
+Causes all windows on the screen to re-draw themselves.
+.IP "Move      "
+Allows the user to move a window. If called from somewhere in a window or its 
+border, then that window will be moved. If called from the root window, then
+the user will be allowed to select the target window
+.IP "Resize    "
+Allows the user to resize a window.
+.IP "Raise     "
+Allows the user to raise a window.
+.IP "Lower     "
+Allows the user to lower a window.
+.IP "RaiseLower"
+Alternately raises and lowers a window.
+.IP "Delete    "
+Sends a message to a window asking that it remove itself, frequently causing
+the application to exit.
+.IP "Destroy   "
+Destroys a window. Guaranteed to get rid of the window, but is a fairly violent
+way to terminate an application.
+.IP "Iconify   "
+Iconfies a window if it is not already iconified, or de-iconifies it if it is
+already iconified.
+.IP "Stick     "
+Makes a window sticky if it is not already sticky, or non-sticky if it
+is already sticky.
+.IP "Scroll \fIhorizonal vertical\fP"
+Scrolls the virtual desktop's viewport by \fIhorizontal\fP pixels in the
+x-direction, and \fIvertical\fP pixels in the y-direction. Either or both 
+entries may be negative.
+.IP "CirculateUp"
+Causes the pointer to move to the previous window in the list of windows for 
+which CirculateSkip has not not been specified as CirculateSkip.
+.IP "CirculateDown"
+Causes the pointer to move to the next window in the list of windows for which
+CirculateSkip has not not been specified as CirculateSkip.
+.IP "NextPage  "
+Moves the desktop viewport to the next page.
+.IP "PrevPage  "
+Moves the desktop viewport to the previous page.
+.IP "Exec \fIname command\fP"
+Executes \fIcommand\fP. \fIcommand\fP is not quoted, but \fIname\fP is.
+\fIname\fP is the name that appears in a menu, if that is where the function is
+called from. \fIname\fP is required even if the function is not called from a 
+menu, for ease of parsing.
+
+The following example binds function key F1 in the root window, with no 
+modifiers, to the exec function. The program rxvt will be started,
+with an assortment of options.
+.nf
+.sp
+Key F1 R N Exec "rxvt" exec rxvt -fg yellow -bg blue -e /bin/tcsh &
+.sp
+.fi
+
+.IP "Popup \fI\"Title\"\fP"
+Used Bind a previously defined pop-up menu to a key or mouse button.
+
+The following example binds mouse buttons 2 and 3 to a popup called
+"Window Ops", whose definition was provided as an example earlier in this man 
+page.
+The menu will pop-up if the buttons 2 or 3 are pressed in the window frame, 
+side-bar, or title-bar, with no modifiers (none of shift, control, or meta).
+.nf
+.sp
+Mouse 2		FST	N	Popup "Window Ops"
+Mouse 3		FST	N	Popup "Window Ops"
+.sp
+.fi
+Popups can be bound to keys through the use of the key modiifer. Popups can
+be operated without using the mouse by binding to keys, and operating via the
+upp arrow, down arrow, and enter keys.
+
+.SH KEYBOARD SHORTCUTS
+All (I think) winodw-manager operations can be performed from the keyboard,
+so mouse-less operation should not be difficult. In addition to scrolling
+around the virtual desktop by binding the Scroll builtin to appropriate keys,
+Popups, move, resize and most other builtins can be bound to keys. Once a
+built-in function is started, the pointer is moved by using the up, down, 
+left, and right arrows, and the action is terminated by pressing return.
+Holding down the shift key will cause the pointer movement to go in larger
+steps, and holding down the control key will cause the cursor movement to
+go in smaller steps.
+
+.SH SUPPLIED CONFIGURATION
+A sample system.fvwmrc  is supplied. It has some nice colors defined, followed
+by the selection of the "fixed" font. Next a list of common clock and mailbox
+gadgets is listed as "NoTitle", so that they won't be decorated. They are also
+set to by sticky, and to stay on top. 
+
+Next the desktop size is set to 3 times the phyical screen size in each 
+direction, and the Pager windows are given a reduction factor of
+32.
+
+A pager is placed 5 pixels away from the the lower right hand corner of the 
+physical screen, and is set to StaysOnTop.
+
+Scrolling on the edge of the screen is disabled, but paging when the cursor
+hits the edge of the screen is enabled. Automatic placement of icons around the
+edge of the screen is enabled.
+
+Certain common gadgets are given properties of StayOnTop, Sticky.
+Icon bitmaps are specified for rxvt and xterm virtual terminals.
+
+Next some Popup Menus are defined.
+
+A menu is bound to mouse buttons 1 and 3 in the root window. 
+This menu provides all
+common window manipulation functions. A menu listing some common utility
+gadgets is bound to button 2 in the root window. 
+
+The left title-bar buttons are bound to the window operations menus, and the
+right title-bar button is made to iconify the window. All mouse buttons
+are given the same use in the title-bar buttons.
+
+Mouse Button 1 in the window frame (the corner pieces) is bound to resize
+the window, and is bound to move the window in the title, side-bars, or
+icon windows. 
+A list of common window
+options is bound to mouse button 2 in the title-bar, side-bar, or frame 
+(anywhere in the decorative border) of any decorated window. Mouse button 2 is
+bound to Iconify (or De-Iconify) when pressed in an icon. Finally, button 3 is bound to the RaiseLower operation in almost any context.
+
+Next, some keyboard buttons are given definitions. Interpretation of these
+bindings is left as an exercise for the reader.
+
+See file alternate.fvwmrc for another sample set-up file.
+
+
+.SH BUGS
+\fIfvwm\fP has not been tested on a screen other than screen zero of any 
+display.  That is, in the standard naming covention of name:display.screen, 
+cases with screen not equal to zero are untested, and will probably not
+work correctly.
+.SH AUTHOR
+Robert Nation (nation@rocket.sanders.lockheed.com), with help from
+Piercarlo Grandi, and Doug Muir, based on \fItwm\fP code, which was 
+written by Thomas LaStrange.
+

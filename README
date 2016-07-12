@@ -1,0 +1,30 @@
+This is release 0.82 of fvwm.
+
+All of the features that I planned are in here, but some code
+clean up still needs to be done.
+
+Mainly, I would like to know if any features are useless, and bugs.
+Other useful feedback might include comments about changes that would make 
+the program better, nicer, or more useful.
+
+
+INSTALLATION:
+You will need to be root to install.
+
+1. type "make install"
+2. edit /usr/lib/X11/xinit/xinitrc to change the last line from
+   "twm" or "exec twm" to "exec fwm"
+3. If you have your own private version of xinitrc in your home 
+   directory, edit that too.
+4. Probably should postpone editing /usr/lib/X11/fvwm/system.fvwmrc,
+   the configuration file, for personal tailoring until you have tried 
+   things out a bit.
+5. Fire up X11, or quit, and re-start. You should see the 3-D window
+   borders on your xterm's or rxvt's. Appearance is significantly
+   different from twm if its working.
+
+
+Rob Nation
+(nation@rocket.sanders.lockheed.com)
+
+

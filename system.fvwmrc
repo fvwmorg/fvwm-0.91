@@ -1,0 +1,150 @@
+
+# set up the colors
+# this is used for non-selected windows, menus, and the panner
+StdForeColor 		Black
+StdBackColor 		#60a0c0
+
+# this is used for the selected window
+HiForeColor 		yellow
+HiBackColor 		#b43060
+
+
+# Now the font - there's only one used
+Font 			fixed
+
+#set the desk top size in units of physical screen size
+DeskTopSize 3x3
+
+DecorateTransients
+
+# and the reduction scale used for the panner/pager
+DeskTopScale 32
+
+# Use the Fvwm Pager
+Pager -5 -5
+
+#The pager is automatically sticky
+StaysOnTop Fvwm Pager
+
+ClickToFocus
+
+# Don't scroll on the screen edge
+NoEdgeScroll
+EdgePage
+
+# Auto Place Icons
+AutoPlaceIcons
+
+# list the windows that don't want a decorative border
+NoTitle xclock
+NoTitle xdclock
+NoTitle Clock
+NoTitle xbiff
+
+# now the windows that "Stick to the glass", ie don't scroll with the
+# desktop
+Sticky xclock
+Sticky xdclock
+Sticky oclock
+Sticky Clock
+Sticky xbiff
+
+# now list windows that want to "stay on top," ie stay visible until
+# explicitly lowered
+StaysOnTop xclock
+StaysOnTop xdclock
+StaysOnTop oclock
+StaysOnTop Clock
+StaysOnTop xbiff
+
+# define some common icon bitmaps
+Icon "rxvt" /usr/include/X11/bitmaps/Term
+Icon "xterm" /usr/include/X11/bitmaps/terminal
+Icon "Fvwm Pager" /tmp_mnt/auto/asp_1a/homes/dsp/nation/fvwm.bitmap
+#now define the menus - defer bindings until later
+Popup "Quit-Verify"
+	Title	"Really Quit Fvwm?"
+	Quit	"Yes, Really Quit"
+	Restart "Restart Fvwm"
+	Nop	"No, Don't Quit"
+EndPopup
+
+Popup "Window Ops"
+	Title	"Window Ops"
+	Move    "Move Window"
+	Resize  "Resize Window"
+	Raise   "Raise Window"
+	Lower   "Lower Window"
+	Iconify "(De)Iconify Window"
+	Stick	"(Un)Stick Window"
+	Nop     " "
+	Destroy "Destroy Window"
+	Delete  "Delete Window"
+	Nop     " "
+	Popup	"Exit Fvwm"		Quit-Verify
+EndPopup
+
+Popup "Utilities"
+	Title 	"Utilities"
+	Exec    "Xterm"		exec xterm &
+	Exec    "Rxvt"		exec rxvt &
+	Exec    "Top"		exec rxvt -T Top -n Top -e top &
+	Exec	"Calculator"	exec xcalc &
+	Exec	"Xman"		exec xman &
+	Exec	"Xmag"		exec xmag &
+	Nop	" "
+	Popup	"Exit Fvwm"	Quit-Verify
+EndPopup
+
+# define the mouse bindings
+#     Button	Context Modifi 	Function
+Mouse 1		R    	N      	PopUp "Window Ops"
+Mouse 2		R   	N       PopUp "Utilities"
+Mouse 3		R    	N      	PopUp "Window Ops"
+
+Mouse 1		1    	N      	PopUp "Window Ops"
+Mouse 2		1    	N      	PopUp "Window Ops"
+Mouse 3		1    	N      	PopUp "Window Ops"
+Mouse 1		2    	N     	Iconify
+Mouse 2		2    	N     	Iconify
+Mouse 3		2    	N     	Iconify
+
+Mouse 1		F	N	Resize
+Mouse 1		TSI	N	Move
+Mouse 2		I	N	Iconify
+Mouse 2		FST	N	PopUp "Window Ops"
+Mouse 3		TSIF	N	RaiseLower
+
+# Arrow Keys
+# press arrow + control anywhere, and scroll by 600 pixels
+Key Left	A	C	Scroll -640 +0
+Key Right	A	C	Scroll +640 +0
+Key Up		A	C	Scroll +0   -480
+Key Down	A	C	Scroll +0   +480
+
+Key Left	A	M	Scroll -10 +0
+Key Right	A	M	Scroll +10 +0
+Key Up		A	M	Scroll +0   -10
+Key Down	A	M	Scroll +0   +10
+
+
+
+# Keyboard accelerators
+Key F1		A	M	Popup "Window Ops"
+Key F2		A	M	Popup "Utilities"
+Key F3		A	M	Move
+Key F4		A	M	Resize
+Key F5		A	M	CirculateUp
+Key F6		A	M	CirculateDown
+
+#Page Up/Dapge Down keys are used to scroll by one desktop page
+# in any context, press page up/down + control
+# in root context, just pressing page up/down is OK
+Key Next	A       C       NextPage        
+Key Next	R       N       NextPage        
+Key Prior	A       C       PrevPage
+Key Prior	R       N       PrevPage
+
+
+
+

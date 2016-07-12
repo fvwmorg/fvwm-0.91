@@ -1,0 +1,98 @@
+DeskTopSize		3x3
+DeskTopScale		16
+
+Pager			-5 -5
+StaysOnTop 		Fvwm Pager
+
+Font			-adobe-helvetica-medium-r-*-*-*-180-75-75-*-*-iso8859-*
+
+StdForeColor		black
+StdBackColor		DarkTurquoise
+
+HiForeColor		yellow
+HiBackColor		MediumVioletRed
+
+NoTitle			Clock
+NoTitle			XClock
+NoTitle			XBiff
+NoTitle			XEyes
+
+Sticky			Clock
+Sticky			XClock
+Sticky			XBiff
+
+StaysOnTop		Clock
+StaysOnTop		XClock
+StaysOnTop		XBiff
+
+Popup "Tools"
+  Title		"TOOLS"
+    Exec	"Shell"		exec xterm &
+    Exec	"Big Shell"	exec xterm -geometry 80x43 &
+    Exec	"Emacs"		exec xemacs &
+    Exec	"Emacs Server"	exec xemacs -f server-start &
+    Exec	"Lock"		exec xlock -nice 20 -mode qix &
+    Exec	"Console"	exec xterm -title Console -C &
+  Title		"ACCESSORIES"
+    Exec	"Mail delivery"	exec xbiff &
+    Exec	"Analog clock"	exec xclock -geometry 48x48 &
+    Exec	"Load average"	exec xload &
+    Exec	"Calculator"	exec xcalc &
+EndPopup
+
+Popup "Window"
+  Title		"WINDOW"
+  Iconify	"Iconify"
+  Raise		"Raise"
+  Lower		"Lower"
+  Refresh	"Repaint"
+EndPopup
+
+Popup "Global"
+  Title		"MANAGE"
+    Move	"Move"
+    Resize	"Resize"
+    Delete	"Delete"
+    Destroy	"Destroy"
+    Refresh	"Refresh"
+    Quit	"Quit"
+  Title		"ROOTS"
+    Exec	"Gray"		exec xsetroot -solid 'gray' &
+    Exec	"Sienna"	exec xsetroot -solid 'sienna' &
+    Exec	"Grass"		exec xsetroot -solid 'dark green' &
+    Exec	"Black"		exec xsetroot -solid 'black' &
+    Exec	"Gray"		exec xsetroot -bitmap /usr/include/X11/bitmaps/gray &
+    Exec	"Stripes"	exec xsetroot -bitmap /usr/include/X11/bitmaps/stripe4 &
+    Exec	"Escher"	exec xsetroot -bitmap /usr/include/X11/bitmaps/escherknot &
+    Exec	"Fine Grid"	exec xsetroot -bitmap /usr/include/X11/bitmaps/grid2 &
+    Exec	"Coarse Grid"	exec xsetroot -bitmap /usr/include/X11/bitmaps/grid8 &
+    Exec	"Moon"		exec xphoon &
+    Exec	"Moons"		exec xphoon -t 20 &
+    Exec	"Weave"		exec xsetroot &
+    Exec	"Ico"		exec ico -r -obj ico &
+EndPopup
+
+Key Left	R	N	Scroll -600 +0
+Key Right	R	N	Scroll +600 +0
+Key Up		R	N	Scroll +0 -600
+Key Down	R	N	Scroll +0 +600
+
+Key Left	A	C	Scroll -600 +0
+Key Right	A	C	Scroll +600 +0
+Key Up		A	C	Scroll +0 -600
+Key Down	A	C	Scroll +0 +600
+
+Mouse	1	TSI	N	Raise
+Mouse	2	TSI	N	Move
+Mouse	2	TSI	M	Popup "Window"
+Mouse	3	TSI	N	Lower
+
+Mouse	1	F	N	Resize
+Mouse	2	F	N	Popup "Window"
+Mouse	3	F	N	Iconify
+
+Mouse	1	R   	N       Popup "Tools"
+Mouse	2	R	N	Popup "Global"
+
+
+
