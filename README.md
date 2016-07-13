@@ -6,6 +6,6 @@ the code was written.
 
 Obligatory screenshot is here:
 
-http://picpaste.com/pNtDDHiC.png
+http://picpaste.com/pics/pNtDDHiC.1468397157.png
 
 Enjoy!
