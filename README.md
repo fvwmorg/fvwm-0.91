@@ -8,4 +8,6 @@ Obligatory screenshot is here:
 
 http://picpaste.com/pics/pNtDDHiC.1468397157.png
 
+Original [README](README) from Rob Nation is worth reading.
+
 Enjoy!
